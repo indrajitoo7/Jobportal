@@ -32,10 +32,9 @@
 <!-- Main -->
 <div id="main" class="box">
 <?php 
-include "Header.php"
-?>
-<?php 
-include "menu.php"
+include "Header.php";
+include "menu.php";
+require_once('../Connections/job.php');
 ?>   
 <!-- Page (2 columns) -->
     <div id="page" class="box">
@@ -91,16 +90,11 @@ include "menu.php"
                        
                       </tr>
                       <?php
-// Establish Connection with Database
-$con = mysql_connect("localhost","root");
-// Select Database
-mysql_select_db("job", $con);
-// Specify the query to execute
-$sql = "select * from JobSeeker_Reg where Status='Pending'";
-// Execute query
-$result = mysql_query($sql,$con);
+
+$result = $conn->query("select * from JobSeeker_Reg where Status='Pending'");
+
 // Loop through each records 
-while($row = mysql_fetch_array($result))
+while($row = $result->fetch_array(MYSQLI_ASSOC))
 {
 $Id=$row['JobSeekId'];
 $Name=$row['JobSeekerName'];
@@ -119,14 +113,14 @@ $Gender=$row['Gender'];
                       <?php
 }
 // Retrieve Number of records returned
-$records = mysql_num_rows($result);
+$records = mysqli_num_rows($result);
 ?>
                       <tr>
                         <td colspan="4" class="style3"><div align="left" class="style12"><?php echo "Total ".$records." Records"; ?> </div></td>
                       </tr>
                       <?php
 // Close the connection
-mysql_close($con);
+mysqli_close($conn);
 ?>
                     </table></td>
                   </tr>

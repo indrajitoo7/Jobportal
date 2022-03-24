@@ -82,17 +82,12 @@ include "menu.php"
                   <tr>
                     <td>
                     <?php
+require_once('../Connections/job.php');                   
 $ID=$_GET['JobId'];
-// Establish Connection with Database
-$con = mysql_connect("localhost","root");
-// Select Database
-mysql_select_db("job", $con);
-// Specify the query to execute
-$sql = "select * from JobSeeker_Reg where JobSeekId='".$ID."'  ";
-// Execute query
-$result = mysql_query($sql,$con);
-// Loop through each records 
-$row = mysql_fetch_array($result)
+
+$result = $conn->query("select * from JobSeeker_Reg where JobSeekId='".$ID."'  ");
+
+$row = $result->fetch_array(MYSQLI_ASSOC);
 ?>
                 <table width="100%" border="1" cellspacing="2" cellpadding="2">
                  <tr>
