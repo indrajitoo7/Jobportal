@@ -1,5 +1,8 @@
 
 <?php
+
+require_once('../Connections/job.php');
+
 if (!isset($_SESSION)) 
 {
   session_start();
@@ -168,15 +171,15 @@ include "menu.php"
                       </tr>
                       <?php
 // Establish Connection with Database
-$con = mysql_connect("localhost","root");
+// $con = mysql_connect("localhost","root");
 // Select Database
-mysql_select_db("job", $con);
+// mysql_select_db("job", $con);
 // Specify the query to execute
 $sql = "select * from job_Master where CompanyName='".$_SESSION['Name']."'";
 // Execute query
-$result = mysql_query($sql,$con);
+$result = $conn->query($sql);
 // Loop through each records 
-while($row = mysql_fetch_array($result))
+while($row = $result->fetch_array(MYSQLI_ASSOC))
 {
 $Id=$row['JobId'];
 $JobTitle=$row['JobTitle'];
@@ -197,14 +200,14 @@ $Description =$row['Description'];
                       <?php
 }
 // Retrieve Number of records returned
-$records = mysql_num_rows($result);
+$records = mysqli_num_rows($result);
 ?>
                       <tr>
                         <td colspan="6" class="style3"><div align="left" class="style12"><?php echo "Total ".$records." Records"; ?> </div></td>
                       </tr>
                       <?php
 // Close the connection
-mysql_close($con);
+mysqli_close($conn);
 ?>
                     </table></td>
                   </tr>

@@ -1,4 +1,9 @@
 <?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if(!isset($_SESSION))
 {
 session_start();
@@ -7,11 +12,11 @@ session_start();
 <?php require_once('../Connections/job.php'); ?>
 <?php
 if (!function_exists("GetSQLValueString")) {
-function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+function GetSQLValueString($theValue, $theType,$conn, $theDefinedValue = "", $theNotDefinedValue = "") 
 {
-  $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+  // $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
 
-  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+  $theValue = function_exists("mysqli_real_escape_string") ? mysqli_real_escape_string($conn,$theValue) : mysql_escape_string($theValue);
 
   switch ($theType) {
     case "text":
@@ -39,17 +44,19 @@ $colname_Recordset1 = "-1";
 if (isset($_SESSION['Name'])) {
   $colname_Recordset1 = $_SESSION['Name'];
 }
-mysql_select_db($database_job, $job);
-$query_Recordset1 = sprintf("SELECT JobId, JobTitle FROM job_master WHERE CompanyName = %s", GetSQLValueString($colname_Recordset1, "text"));
-$Recordset1 = mysql_query($query_Recordset1, $job) or die(mysql_error());
-$row_Recordset1 = mysql_fetch_assoc($Recordset1);
-$totalRows_Recordset1 = mysql_num_rows($Recordset1);
-
-mysql_select_db($database_job, $job);
+// mysql_select_db($database_job, $job);
+$query_Recordset1 = sprintf("SELECT JobId, JobTitle FROM job_master WHERE CompanyName = %s", GetSQLValueString($colname_Recordset1, "text",$conn ,"",""));
+$Recordset1 = $conn->query($query_Recordset1);
+$row_Recordset1 = $Recordset1->fetch_array(MYSQLI_ASSOC);
+$totalRows_Recordset1 = mysqli_num_rows($Recordset1);
+// echo "<pre>";
+// print_r($row_Recordset1);die;
+// mysql_select_db($database_job, $job);
 $query_Recordset2 = "SELECT application_master.ApplicationId, application_master.Status, jobseeker_reg.JobSeekerName, jobseeker_reg.City, jobseeker_reg.Email, application_master.JobId FROM application_master, jobseeker_reg WHERE jobseeker_reg.JobSeekId=application_master.JobSeekId";
-$Recordset2 = mysql_query($query_Recordset2, $job) or die(mysql_error());
-$row_Recordset2 = mysql_fetch_assoc($Recordset2);
-$totalRows_Recordset2 = mysql_num_rows($Recordset2);
+$Recordset2 = $conn->query($query_Recordset2);
+$row_Recordset2 = $Recordset2->fetch_array(MYSQLI_ASSOC);
+$totalRows_Recordset2 = mysqli_num_rows($Recordset2);
+
 ?><?xml version="1.0"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="cs" lang="cs">
@@ -139,11 +146,11 @@ do {
 ?>
                           <option value="<?php echo $row_Recordset1['JobId']?>"><?php echo $row_Recordset1['JobTitle']?></option>
                           <?php
-} while ($row_Recordset1 = mysql_fetch_assoc($Recordset1));
-  $rows = mysql_num_rows($Recordset1);
+} while ($row_Recordset1 = $Recordset1->fetch_array(MYSQLI_ASSOC));
+  $rows = mysqli_num_rows($Recordset1);
   if($rows > 0) {
-      mysql_data_seek($Recordset1, 0);
-	  $row_Recordset1 = mysql_fetch_assoc($Recordset1);
+    mysqli_data_seek($Recordset1, $rows);
+	  $row_Recordset1 = $Recordset1->fetch_array(MYSQLI_ASSOC);
   }
 ?>
                         </select>
@@ -171,9 +178,9 @@ do {
                   </tr>
                   <?php
 // Establish Connection with Database
-$con = mysql_connect("localhost","root");
+// $con = mysql_connect("localhost","root");
 // Select Database
-mysql_select_db("job", $con);
+// mysql_select_db("job", $con);
 // Specify the query to execute
 $sql = "SELECT application_master.ApplicationId, application_master.Status, 
 
@@ -183,10 +190,11 @@ application_master.JobId
 FROM application_master, jobseeker_reg
 WHERE jobseeker_reg.JobSeekId=application_master.JobSeekId and application_master.JobId='".$Title."'";
 // Execute query
-$result = mysql_query($sql,$con);
+// $result = mysql_query($sql,$con);
+$result = $conn->query($sql);
 $stat=1;
 // Loop through each records 
-while($row = mysql_fetch_array($result))
+while($row = $result->fetch_array(MYSQLI_ASSOC))
 {
 $Id=$row['ApplicationId'];
 $Status=$row['Status'];
@@ -206,13 +214,13 @@ $JobSeekId=$row['JobSeekId'];
                   <?php
 }
 // Retrieve Number of records returned
-$records = mysql_num_rows($result);
+$records = mysqli_num_rows($result);
 ?>
                 </table>
                 <?php
 			
 // Close the connection
-mysql_close($con);
+mysqli_close($conn);
 	}
 ?>
               <p>&nbsp;</p>
@@ -240,7 +248,7 @@ include "footer.php"
 </body>
 </html>
 <?php
-mysql_free_result($Recordset1);
+mysqli_free_result($Recordset1);
 
-mysql_free_result($Recordset2);
+mysqli_free_result($Recordset2);
 ?>

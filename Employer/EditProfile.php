@@ -1,4 +1,6 @@
 <?php
+require_once('../Connections/job.php');
+
 if (!isset($_SESSION)) 
 {
   session_start();
@@ -87,15 +89,15 @@ include "menu.php"
                <?php
 $ID=$_SESSION['ID'];
 // Establish Connection with Database
-$con = mysql_connect("localhost","root");
+// $con = mysql_connect("localhost","root");
 // Select Database
-mysql_select_db("job", $con);
+// mysql_select_db("job", $con);
 // Specify the query to execute
 $sql = "select * from Employer_Reg where EmployerId ='".$ID."'  ";
 // Execute query
-$result = mysql_query($sql,$con);
+$result = $conn->query($sql);
 // Loop through each records 
-$row = mysql_fetch_array($result)
+$row = $result->fetch_array(MYSQLI_ASSOC);
 ?>
 <form method="post" action="UpdateProfile.php">
                 <table width="100%" border="1" cellspacing="2" cellpadding="2">
