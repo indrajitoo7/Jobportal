@@ -1,7 +1,6 @@
 <?php 
 session_start();
 ?>
-<?xml version="1.0"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="cs" lang="cs">
 <head>
@@ -89,13 +88,11 @@ include "menu.php"
                     <td bgcolor="#A0B9F3"><div align="center"><a href="Profile.php"><strong>Profile</strong></a></div></td>
                     <td bgcolor="#A0B9F3"><div align="center"><a href="ManageJob.php"><strong>Manage JOB</strong></a></div></td>
                   </tr>
-                  <tr>
-                    <td><div align="center"><img src="design/Interview.png" alt="" width="64" height="64" /></div></td>
+                  <tr>                    
                     <td><div align="center"><img src="design/Feedback.png" alt="" width="64" height="64" /></div></td>
                     <td><div align="center"><img src="design/Log.png" alt="" width="64" height="64" /></div></td>
                   </tr>
-                  <tr>
-                    <td bgcolor="#A0B9F3"><div align="center"><a href="ManageWalkin.php"><strong>Walkin</strong></a></div></td>
+                  <tr>                    
                     <td bgcolor="#A0B9F3"><div align="center"><a href="Application.php"><strong>Application</strong></a></div></td>
                     <td bgcolor="#A0B9F3"><div align="center"><a href="logout.php"><strong>Logout</strong></a></div></td>
                   </tr>

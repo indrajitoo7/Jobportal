@@ -102,10 +102,7 @@ session_start();
                   <div align="center"><a href="SearchJob.php"><strong>Search JOB</strong></a></div>
                 </td>
               </tr>
-              <tr>
-                <td>
-                  <div align="center"><img src="design/Interview.png" alt="" width="64" height="64" /></div>
-                </td>
+              <tr>                
                 <td>
                   <div align="center"><img src="design/Feedback.png" alt="" width="64" height="64" /></div>
                 </td>
@@ -113,10 +110,7 @@ session_start();
                   <div align="center"><img src="design/Log.png" alt="" width="64" height="64" /></div>
                 </td>
               </tr>
-              <tr>
-                <td bgcolor="#A0B9F3">
-                  <div align="center"><a href="Walkin.php"><strong>Walkin</strong></a></div>
-                </td>
+              <tr>                
                 <td bgcolor="#A0B9F3">
                   <div align="center"><a href="Feedback.php"><strong>Feedback</strong></a></div>
                 </td>
